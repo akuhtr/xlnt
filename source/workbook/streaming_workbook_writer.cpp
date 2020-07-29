@@ -101,8 +101,10 @@ void streaming_workbook_writer::open(std::ostream &stream)
     producer_.reset(new detail::xlsx_producer(*workbook_));
     producer_->open(stream);
     producer_->current_worksheet_ = new detail::worksheet_impl(workbook_.get(), 1, "Sheet1");
-    producer_->current_cell_ = new detail::cell_impl();
-    producer_->current_cell_->parent_ = producer_->current_worksheet_;
+    detail::cell_impl impl;
+    impl.parent_ = producer_->current_worksheet_;
+    cell_reference reference{impl.column_, impl.row_};
+    producer_->current_cell_ = &impl.parent_->cell_map_.emplace(reference, impl).first->second;
 }
 
 } // namespace xlnt

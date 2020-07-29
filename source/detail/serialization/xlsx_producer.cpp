@@ -1249,7 +1249,7 @@ void xlsx_producer::write_styles(const relationship & /*rel*/)
         if (stylesheet.known_fonts_enabled)
         {
             auto is_known_font = [](const font &f) {
-                const auto &known_fonts = *new std::vector<font>{
+                const std::vector<font> known_fonts {
                     font().name("Calibri").family(2).size(12).color(theme_color(1)).scheme("minor")};
 
                 return std::find(known_fonts.begin(), known_fonts.end(), f) != known_fonts.end();
